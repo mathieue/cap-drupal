@@ -36,10 +36,8 @@ end
 
 files = {
   "Capfile" => unindent(<<-FILE),
-    load 'deploy' if respond_to?(:namespace) # cap2 differentiator
-    Dir['vendor/plugins/*/recipes/*.rb'].each { |plugin| load(plugin) }
     require 'capistrano/ext/multistage'
-    require 'cap-drupal'
+    require 'recipes/drupal'
     load "config/deploy"
   FILE
 
@@ -54,14 +52,14 @@ files = {
   ###########################################
   # this conf should be in staging specific conf (dev/preview/etc...)
   # ex: config/deploy/development.rb
-  set :deploy_to, "/path/to/app"
+  #  set :deploy_to, "/path/to/app"
 
   # user generated content
-  set :ugc_path, "\#{deploy_to}/sites/default/files"
-  set :application_host, "mysite.net"
+  #  set :ugc_path, "\#{deploy_to}/sites/default/files"
+  #  set :application_host, "mysite.net"
 
-  role :web, "mysite.net"
-  role :db,  "mysite.net", :primary => true
+  #  role :web, "mysite.net"
+  #  role :db,  "mysite.net", :primary => true
   FILE
 }
 

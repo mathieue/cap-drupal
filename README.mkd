@@ -1,0 +1,25 @@
+# Cap Drupal
+
+Capistrano drupal helpers
+
+## Install
+
+    # gem install cap-drupal
+
+
+## Usage
+
+	mkdir config
+	cap-drupal  .
+	cap multistage:prepare
+
+Now you have this tree
+
+	.
+	+--- config
+	|   +--- deploy
+	|   |   +--- production.rb
+	|   |   +--- development.rb
+	|   |   +--- preview.rb
+	|   +--- deploy.rb
+	+--- Capfile

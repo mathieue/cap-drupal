@@ -1,10 +1,15 @@
 Capistrano::Configuration.instance(:must_exist).load do
   # nb of dumps to keep after a clean
-  set :max_keep_dump, 5
   # nb of ugc files dirs backup
-  set :max_keep_backup, 3
 
-  set :user, "cap"
+  unless exists?(:max_keep_dump)
+    set :max_keep_dump, 5
+  end
+
+  unless exists?(:max_keep_backup)
+    set :max_keep_backup, 3
+  end
+
   namespace :drupal do
 
     desc "clear all drupal caches"

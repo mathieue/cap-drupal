@@ -5,11 +5,11 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
     gem.name = "cap-drupal"
-    gem.summary = %Q{TODO: one-line summary of your gem}
-    gem.description = %Q{TODO: longer description of your gem}
+    gem.summary = %Q{Drupal capistrano recipes}
+    gem.description = %Q{Capistrano recipes fitted to our needs/workflow at websiteburo, could be useful elsewhere}
     gem.email = "mathieuelie@gmail.com"
     gem.homepage = "http://github.com/mathieue/cap-drupal"
-    gem.authors = ["Mathieu ELie"]
+    gem.authors = ["Mathieu Elie"]
     gem.add_development_dependency "thoughtbot-shoulda", ">= 0"
     # gem is a Gem::Specification... see http://www.rubygems.org/read/chapter/20 for additional settings
   end

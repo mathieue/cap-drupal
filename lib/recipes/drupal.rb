@@ -1,7 +1,7 @@
 Capistrano::Configuration.instance(:must_exist).load do
-  # nb of dump to keep after a clean
+  # nb of dumps to keep after a clean
   set :max_keep_dump, 5
-  # nb of ugc file backup
+  # nb of ugc files dirs backup
   set :max_keep_backup, 3
 
   set :user, "cap"
@@ -92,7 +92,7 @@ Capistrano::Configuration.instance(:must_exist).load do
 
       desc "backup and dowload user generated content"
       task :download, :roles => :db do
-        dump
+        backup
         latest
       end
     end

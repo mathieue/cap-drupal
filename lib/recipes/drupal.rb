@@ -12,20 +12,27 @@ Capistrano::Configuration.instance(:must_exist).load do
 
   namespace :drupal do
 
-    desc "clear all drupal caches"
+    desc <<-DESC 
+    Clear all drupal caches. Invoke drush cc all.
+    DESC
     task :clearcache, :roles => :db do
       run "sudo drush -r \"#{deploy_to}\" cc all"
     end
 
     namespace :clean do
       namespace :db do
-        desc "list db dumps to delete"
+        desc <<-DESC 
+            List db dumps to delete. Based on timestamp, show the oldest
+            which exceed max_keep_dump. 
+        DESC
         task :check, :roles => :db do
           dumps_to_delete do |dump|
             puts "will delete #{dump}"
           end
         end
-        desc "delete db dumps over max_keep_dump"
+        desc <<-DESC 
+            Delete db dumps over max_keep_dump. 
+        DESC
         task :commit, :roles => :db do
           dumps_to_delete do |dump|
             run "rm #{dump}"
@@ -33,13 +40,18 @@ Capistrano::Configuration.instance(:must_exist).load do
         end
       end
       namespace :ugc do
-        desc "list ugc backups to delete"
+        desc <<-DESC 
+            List ugc backups to delete. Based on timestamp, show the oldest
+            which exceed max_keep_dump. 
+        DESC
         task :check, :roles => :web do
           backups_to_delete do |backup|
             puts "will delete #{backup}"
           end
         end
-        desc "delete ugc backups over max_keep_backup"
+        desc <<-DESC 
+            Delete ugc backups over max_keep_backup
+        DESC
         task :commit, :roles => :web do
           backups_to_delete do |backup|
             run "rm -rf #{backup}"
@@ -49,19 +61,25 @@ Capistrano::Configuration.instance(:must_exist).load do
     end
 
     namespace :db do
-      desc "dump the db to cap user home directory"
+      desc <<-DESC 
+        Dump the db to cap user home directory.
+      DESC
       task :dump, :roles => :db do
         filename = "#{application}-#{stage}-#{now}.sql"
         run "sudo drush -r \"#{deploy_to}\" sql-dump > ~/#{filename}"
       end
 
-      desc "get the latest db dump to current local dir"
+      desc <<-DESC 
+        Download latest db dump to current local dir.
+      DESC
       task :latest, :roles => :db do
         dumps = capture("ls -xt ~/#{application}-#{stage}-*sql").split.reverse
         get(dumps.last, "#{dumps.last.split('/').last}")
       end
 
-      desc "dump the db and download to local dir"
+    desc <<-DESC 
+      Dump the db and download to local dir.
+    DESC
       task :download, :roles => :db do
         dump
         latest
@@ -71,12 +89,16 @@ Capistrano::Configuration.instance(:must_exist).load do
     # user generated content
     namespace :ugc do
 
-      desc "show the ugc files current size"
+      desc <<-DESC 
+        Show the ugc files current size (du -sh).
+      DESC
       task :size, :role => :web do
         run "du -sh #{ugc_path}"
       end
 
-      desc "copy user generated content to cap user home"
+      desc <<-DESC 
+        Copy user generated content to cap user home.
+      DESC
       task :backup, :role => :web do
         size
         dirname = "~/#{application}-#{stage}-#{now}-ugc"
@@ -85,7 +107,10 @@ Capistrano::Configuration.instance(:must_exist).load do
         run "touch #{dirname}"
       end
 
-      desc "get the latest ugc backup"
+      desc <<-DESC 
+        Rsync the latest ugc backup to a local dir.
+        Use a local cache dir so rsync do not transfert same files twice.
+      DESC
       task :latest, :role => :web do
         backups = capture("ls -dxt ~/#{application}-#{stage}-*-ugc").split.reverse
         size
@@ -95,7 +120,11 @@ Capistrano::Configuration.instance(:must_exist).load do
         system "rsync -lrp #{ugc_local_cache}/ #{backups.last.split('/').last}"
       end
 
-      desc "backup and dowload user generated content"
+      desc <<-DESC 
+        Backup and dowload user generated content. 
+        Copy on remote to cap home. Then rsync to a local dir.
+        Use a local cache dir so rsync do not transfert same files twice.
+      DESC
       task :download, :roles => :db do
         backup
         latest

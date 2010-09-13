@@ -1,19 +1,25 @@
 # Cap Drupal
 
-Capistrano drupal helpers
+Capistrano drupal recipes.
+
+Dump dbs, backup user generated content, clear cache, and rsync to local host.
+
+This the first releases. Feedbacks, fork and comments welcomed :)
 
 ## Install
 
-    # gem install cap-drupal
+	# gem install cap-drupal
 
 
 ## Usage
 
 	mkdir config
 	cap-drupal  .
+
+        # helper
 	cap multistage:prepare
 
-Now you have this tree
+	Now you have this tree
 
 	.
 	+--- config
@@ -23,3 +29,12 @@ Now you have this tree
 	|   |   +--- preview.rb
 	|   +--- deploy.rb
 	+--- Capfile
+
+## Help
+
+	# list tasks with capistrano
+	cap -T
+        
+        # get extend help: ex drupal:clearcache
+        cap -e drupal:clearcache
+
